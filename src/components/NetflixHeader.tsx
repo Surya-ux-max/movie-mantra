@@ -1,34 +1,78 @@
+import { useState } from "react";
 import { Search, Bell, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import SearchModal from "./SearchModal";
+import NotificationPanel from "./NotificationPanel";
+import UserProfileModal from "./UserProfileModal";
 
 const NetflixHeader = () => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  
+  // Mock notification count
+  const notificationCount = 3;
+
   return (
-    <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-background/90 to-transparent px-4 py-4">
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-8">
-          <h1 className="text-netflix-red text-2xl font-bold">NETFLIX</h1>
-          <nav className="hidden md:flex space-x-6">
-            <a href="#" className="text-foreground hover:text-muted-foreground transition-colors">Home</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">TV Shows</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Movies</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">New & Popular</a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">My List</a>
-          </nav>
+    <>
+      <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-background/90 to-transparent px-4 py-4">
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex items-center space-x-8">
+            <h1 className="text-netflix-red text-2xl font-bold">NETFLIX</h1>
+            <nav className="hidden md:flex space-x-6">
+              <a href="#" className="text-foreground hover:text-muted-foreground transition-colors">Home</a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">TV Shows</a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Movies</a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">New & Popular</a>
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">My List</a>
+            </nav>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-foreground hover:text-muted-foreground"
+              onClick={() => setIsSearchOpen(true)}
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-foreground hover:text-muted-foreground relative"
+              onClick={() => setIsNotificationOpen(true)}
+            >
+              <Bell className="h-5 w-5" />
+              {notificationCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                >
+                  {notificationCount}
+                </Badge>
+              )}
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-foreground hover:text-muted-foreground"
+              onClick={() => setIsProfileOpen(true)}
+            >
+              <User className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
-        
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="text-foreground hover:text-muted-foreground">
-            <Search className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="text-foreground hover:text-muted-foreground">
-            <Bell className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="text-foreground hover:text-muted-foreground">
-            <User className="h-5 w-5" />
-          </Button>
-        </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Modals */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <NotificationPanel isOpen={isNotificationOpen} onClose={() => setIsNotificationOpen(false)} />
+      <UserProfileModal isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
+    </>
   );
 };
 
